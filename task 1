@@ -1,0 +1,88 @@
+initial_state = ((1, 2, 3),
+                 (4, 0, 5),
+                 (7, 8, 6))
+
+goal_state = ((1, 2, 3),
+              (4, 5, 6),
+              (7, 8, 0))
+
+
+# 0 is the blank space
+
+# Find the blank space
+def find_blank(state):
+    for row in range(3):
+        for col in range(3):
+            if state[row][col] == 0:
+                return row, col
+
+
+# Generate all possible moves
+def generate_moves(state):
+    row, col = find_blank(state)
+    possible_moves = []
+
+    # Move UP
+    if row > 0:
+        new_state = [list(r) for r in state]
+
+        new_state[row][col], new_state[row - 1][col] = (
+            new_state[row - 1][col],
+            new_state[row][col]
+        )
+
+        new_state = tuple(tuple(r) for r in new_state)
+        possible_moves.append(("UP", new_state))
+
+
+    # Move DOWN
+    if row < 2:
+        new_state = [list(r) for r in state]
+
+        new_state[row][col], new_state[row + 1][col] = (
+            new_state[row + 1][col],
+            new_state[row][col]
+        )
+
+        new_state = tuple(tuple(r) for r in new_state)
+        possible_moves.append(("DOWN", new_state))
+
+
+    # Move LEFT
+    if col > 0:
+        new_state = [list(r) for r in state]
+
+        new_state[row][col], new_state[row][col - 1] = (
+            new_state[row][col - 1],
+            new_state[row][col]
+        )
+
+        new_state = tuple(tuple(r) for r in new_state)
+        possible_moves.append(("LEFT", new_state))
+
+
+    # Move RIGHT
+    if col < 2:
+        new_state = [list(r) for r in state]
+
+        new_state[row][col], new_state[row][col + 1] = (
+            new_state[row][col + 1],
+            new_state[row][col]
+        )
+
+        new_state = tuple(tuple(r) for r in new_state)
+        possible_moves.append(("RIGHT", new_state))
+
+
+    return possible_moves
+
+
+# Generate moves
+moves = generate_moves(initial_state)
+
+# Print the possible moves
+for move, state in moves:
+    print("Move:", move)
+    for row in state:
+        print(row)
+    print()
